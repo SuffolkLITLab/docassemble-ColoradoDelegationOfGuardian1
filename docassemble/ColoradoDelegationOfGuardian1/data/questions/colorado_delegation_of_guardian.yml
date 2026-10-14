@@ -93,7 +93,8 @@ code: |
 objects:
   - children: ALPeopleList.using(ask_number=True,target_number=1)
   - notarized: ALPeopleList.using(ask_number=True,target_number=1)
-  - users: ALPeopleList.using(ask_number=True,target_number=1)
+  - users: ALPeopleList.using(ask_number=True,target_number=2)
+  - authorization: ALPeopleList.using(ask_number=True,target_number=1)
 ---
 sections:
   - people: People
@@ -103,10 +104,8 @@ sections:
   - review_colorado_delegation_of_guardian: Review your answers
 ---
 #################### Interview order #####################
-comment: |
-  Controls order and branching logic for questions specific to this form
 id: interview_order_colorado_delegation_of_guardian
-mandatory: True
+mandatory: true
 code: |
   al_intro_screen
   colorado_delegation_of_guardian_intro
@@ -118,22 +117,17 @@ code: |
   set_progress(30)
   children[0].birthdate
   children.gather()
+  authorization_end_date
   set_progress(60)
   notarized.gather()
   notarized_state
   signature_date
-  # Store anonymous data for analytics / statistics
-  store_variables_snapshot(
-      persistent=True,
-      data={
-          "zip": showifdef("users[0].address.zip"),
-          "reached_interview_end": True,
-      },
-  )
+  store_variables_snapshot( persistent=True, data={ "zip": showifdef("users[0].address.zip"), "reached_interview_end": True, }, )
   colorado_delegation_of_guardian_preview_question
   basic_questions_signature_flow
   set_progress(100)
   colorado_delegation_of_guardian_download
+comment: Controls order and branching logic for questions specific to this form
 ---
 id: Colorado Delegation of Guardian intro
 continue button field: colorado_delegation_of_guardian_intro
@@ -163,7 +157,7 @@ id: Authorization Details
 question: |
   Authorization Details
 subquestion: |
-  Specify the time of the authorization.
+  Specify the end of the Attorney in Fact authorization.
 fields:
   - "End date of authorization": authorization_end_date
     datatype: date
@@ -483,6 +477,7 @@ attachment:
       - "children1_birthdate": ${ children[0].birthdate.format() }
       - "user1_relationship": ${ user1_relationship }
       - "children1_name": ${ children[0] }
+      - "users2_name_full": ${ users[0] }
       - "authorization_end_date": ${ authorization_end_date.format() }
       - "users1_signature_date": ${ users1_signature_date.format() }
       - "users1_signature": ${ users[0].signature }
@@ -495,3 +490,14 @@ attachment:
       - "notarized_expiration": ${ notarized_expiration.format() }
       - "notarized_name": ${ notarized[0] }
       - "notarized_signature": ${ notarized[0].signature_if_final(i) }
+---
+#id: attorney_in_fact_end_date_gather
+#question: |
+#  What is the end date of the authorization?
+#subquestion: |
+#  Enter the date when the Attorney in Fact's authority should end.
+#fields:
+#- label: End date of authorization
+#  field: attorney_in_fact_end_date
+#  datatype: date
+#continue button field: continue
