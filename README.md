@@ -1,2 +1,3 @@
-# docassemble-ColoradoDelegationOfGuardian1
-A docassemble project for ColoradoDelegationOfGuardian1.
+# docassemble.ColoradoDelegationOfGuardian1
+
+A docassemble extension.
