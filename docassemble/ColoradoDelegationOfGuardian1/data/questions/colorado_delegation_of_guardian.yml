@@ -95,6 +95,7 @@ objects:
   - notarized: ALPeopleList.using(ask_number=True,target_number=1)
   - users: ALPeopleList.using(ask_number=True,target_number=2)
   - authorization: ALPeopleList.using(ask_number=True,target_number=1)
+  - other_parties: ALPeopleList.using(ask_number=True,target_number=1)
 ---
 sections:
   - people: People
@@ -117,6 +118,7 @@ code: |
   set_progress(30)
   children[0].birthdate
   children.gather()
+  other_parties.gather()
   authorization_end_date
   set_progress(60)
   notarized.gather()
@@ -231,6 +233,22 @@ fields:
   - code: |
       users[i].name_fields()
 ---
+id: other parties names
+sets:
+  - other_parties[i].name.first
+  - other_parties[i].name.last
+  - other_parties[i].name.middle
+  - other_parties[i].name.suffix
+question: |
+  % if hasattr(other_parties, 'ask_number') and other_parties.ask_number and other_parties.target_number == 1:
+  Name of Attorney in Fact
+  % else:
+  Name of the ${ ordinal(i) } Attorney in Fact
+  % endif
+fields:
+  - code: |
+      other_parties[i].name_fields()
+---
 id: preview colorado_delegation_of_guardian
 question: |
   Preview your form before you sign it
@@ -294,7 +312,13 @@ review:
       % for item in children:
         * ${ item }
       % endfor
+  - Edit: other_parties.revisit
+    button: |
+      **Other parties**
 
+      % for item in other_parties:
+        * ${ item }
+      % endfor
   - Edit: notarized.revisit
     button: |
       **Notarized**
@@ -381,6 +405,24 @@ columns:
       row_item.name_full() if defined("row_item.name.first") else ""
 edit:
   - birthdate
+  - name.first
+confirm: True
+---
+id: edit other parties
+continue button field: other_parties.revisit
+question: |
+  Edit other_parties
+subquestion: |
+  ${ other_parties.table }
+
+  ${ other_parties.add_action() }
+---
+table: other_parties.table
+rows: other_parties
+columns:
+  - Name: |
+      row_item.name_full() if defined("row_item.name.first") else ""
+edit:
   - name.first
 confirm: True
 ---
@@ -477,7 +519,7 @@ attachment:
       - "children1_birthdate": ${ children[0].birthdate.format() }
       - "user1_relationship": ${ user1_relationship }
       - "children1_name": ${ children[0] }
-      - "users2_name_full": ${ users[0] }
+      - "other_parties1_name": ${ other_parties[0] }
       - "authorization_end_date": ${ authorization_end_date.format() }
       - "users1_signature_date": ${ users1_signature_date.format() }
       - "users1_signature": ${ users[0].signature }
