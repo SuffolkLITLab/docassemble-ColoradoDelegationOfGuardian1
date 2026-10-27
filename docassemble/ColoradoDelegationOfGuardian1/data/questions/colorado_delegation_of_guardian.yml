@@ -114,14 +114,14 @@ code: |
   users.gather()
   set_parts(subtitle=str(users))
   nav.set_section("case_details")
-  user1_relationship
   set_progress(30)
+  user1_relationship
   children[0].birthdate
   children.gather()
   other_parties.gather()
   authorization_end_date
-  set_progress(60)
   notarized.gather()
+  set_progress(60)
   notarized_state
   signature_date
   store_variables_snapshot( persistent=True, data={ "zip": showifdef("users[0].address.zip"), "reached_interview_end": True, }, )
@@ -151,7 +151,7 @@ id: Parent Guardian Information
 question: |
   Parent/Guardian Information
 fields:
-  - "Relationship to the minor or incapacitated": user1_relationship
+  - What is your relationship to the child?: user1_relationship
   - "Date of parent or guardian signature": users1_signature_date
     datatype: date
 ---
@@ -161,18 +161,18 @@ question: |
 subquestion: |
   Specify the end of the Attorney in Fact authorization.
 fields:
-  - "End date of authorization": authorization_end_date
+  - When would you like the authorization to end?: authorization_end_date
     datatype: date
 ---
 id: Notarization Information
-question: |
-  Notarization Information
+question: |2
+  When and where was this document notarized?
 fields:
   - "State where notarization occurred": notarized_state
   - "Day of notarization": notarized_day
   - "Month of notarization": notarized_month
   - "Year of notarization": notary_year
-  - "End date of notarization": notarized_expiration
+  - When does the notarization commission expire?: notarized_expiration
     datatype: date
 ---
 comment: |
@@ -187,9 +187,9 @@ sets:
   - children[i].name.last
   - children[i].name.middle
   - children[i].name.suffix
-question: |
+question: |2
   % if hasattr(children, 'ask_number') and children.ask_number and children.target_number == 1:
-  Name of child
+  What is the name of the child?
   % else:
   Name of the ${ ordinal(i) } child
   % endif
@@ -203,9 +203,9 @@ sets:
   - notarized[i].name.last
   - notarized[i].name.middle
   - notarized[i].name.suffix
-question: |
+question: |2
   % if hasattr(notarized, 'ask_number') and notarized.ask_number and notarized.target_number == 1:
-  Name of notarized
+  What is the name of the notary?
   % else:
   Name of the ${ ordinal(i) } notarized
   % endif
@@ -239,9 +239,9 @@ sets:
   - other_parties[i].name.last
   - other_parties[i].name.middle
   - other_parties[i].name.suffix
-question: |
+question: |2
   % if hasattr(other_parties, 'ask_number') and other_parties.ask_number and other_parties.target_number == 1:
-  Name of Attorney in Fact
+  Who are you assigning as the Attorney in Fact?
   % else:
   Name of the ${ ordinal(i) } Attorney in Fact
   % endif
