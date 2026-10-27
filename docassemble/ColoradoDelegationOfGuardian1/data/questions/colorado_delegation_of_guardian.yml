@@ -123,6 +123,7 @@ code: |
   notarized.gather()
   set_progress(60)
   notarized_state
+  notarized_expiration
   signature_date
   store_variables_snapshot( persistent=True, data={ "zip": showifdef("users[0].address.zip"), "reached_interview_end": True, }, )
   colorado_delegation_of_guardian_preview_question
@@ -168,11 +169,15 @@ id: Notarization Information
 question: |2
   When and where was this document notarized?
 fields:
-  - "State where notarization occurred": notarized_state
-  - "Day of notarization": notarized_day
-  - "Month of notarization": notarized_month
-  - "Year of notarization": notary_year
-  - When does the notarization commission expire?: notarized_expiration
+  - State where notarization occurred: notarized_state
+  - Day of notarization: notarized_day
+  - Month of notarization: notarized_month
+  - Year of notarization: notary_year
+---
+id: Notarization Expiration
+question: "When does the notary's commission expire?"
+fields:
+  - Date of expiration: notarized_expiration
     datatype: date
 ---
 comment: |
