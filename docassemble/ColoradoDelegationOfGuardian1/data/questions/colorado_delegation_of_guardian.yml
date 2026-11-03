@@ -159,9 +159,9 @@ id: Authorization Details
 question: |
   Authorization Details
 subquestion: |
-  Specify the end of the Attorney in Fact authorization.
+  When should this permission end? Enter a date up to 12 months after this form is filed.
 fields:
-  - When would you like the authorization to end?: authorization_end_date
+  - When would you like the permission to end?: authorization_end_date
     datatype: date
 ---
 id: Notarization Information
