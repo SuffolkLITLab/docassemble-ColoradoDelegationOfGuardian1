@@ -120,10 +120,12 @@ code: |
   children.gather()
   other_parties.gather()
   authorization_end_date
-  notarized.gather()
-  set_progress(60)
-  notarized_state
-  notarized_expiration
+  notary_present_yes_no
+  if has_notary:
+    notarized.gather()
+    set_progress(60)
+    notarized_state
+    notarized_expiration
   signature_date
   store_variables_snapshot( persistent=True, data={ "zip": showifdef("users[0].address.zip"), "reached_interview_end": True, }, )
   colorado_delegation_of_guardian_preview_question
@@ -152,18 +154,30 @@ question: |
   Parent/Guardian Information
 fields:
   - What is your relationship to the child?: user1_relationship
+    datatype: dropdown
+    choices:
+      - Parent
+      - Guardian
   - "Date of parent or guardian signature": users1_signature_date
     datatype: date
 ---
 id: Authorization Details
-question: |
-  Authorization Details
+question: |2
+  How long would you like this person to take care of the child?
 subquestion: |
   When should this permission end? Enter a date up to 12 months after this form is filed.
 fields:
   - When would you like the permission to end?: authorization_end_date
     datatype: date
 ---
+id: notary_present_yes_no
+question: "Is there a notary with you?"
+fields:
+  - Is there a notary with you?: has_notary
+    datatype: yesnoradio
+continue button field: notary_present_yes_no
+---
+
 id: Notarization Information
 question: |2
   When and where was this document notarized?
@@ -246,7 +260,7 @@ sets:
   - other_parties[i].name.suffix
 question: |2
   % if hasattr(other_parties, 'ask_number') and other_parties.ask_number and other_parties.target_number == 1:
-  Who are you assigning as the Attorney in Fact?
+  Who would you like to take care of the child?
   % else:
   Name of the ${ ordinal(i) } Attorney in Fact
   % endif
