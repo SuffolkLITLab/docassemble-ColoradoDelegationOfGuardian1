@@ -7,7 +7,7 @@ metadata:
   title: >-
     Colorado Delegation of Guardian
   short title: >-
-    Colorado Delegation of Gu
+    Delegation of Guardian
   description: |-
     This form lets a parent or guardian delegate their power to someone else for taking care of their minor child or person who can't take care of themselves. It includes rules for medical and dental care.
   can_I_use_this_form: |
@@ -26,7 +26,7 @@ metadata:
   efiling_enabled: False
   integrated_efiling: False
   integrated_email_filing: False
-  requires_notarization: False
+  requires_notarization: True
   unlisted: False
   landing_page_url: >-
     https://courtformsonline.org/
@@ -34,9 +34,9 @@ metadata:
   estimated_completion_minutes: ""
   estimated_completion_delta: ""
   LIST_topics:
-    - "CO-00-00-00-00"
+    - "ES-03-03-00-00"
   tags:
-    - "CO-00-00-00-00"
+    - "ES-03-03-00-00"
   authors:
     - Court Forms Online
   original_form: []
@@ -188,6 +188,7 @@ fields:
   - Month of notarization: notarized_month
   - Year of notarization: notary_year
   - Expiration of notarization: notarized_expiration
+    datatype: date
 ---
 ##id: Notarization Expiration
 ##question: "When does the notary's commission expire?"
