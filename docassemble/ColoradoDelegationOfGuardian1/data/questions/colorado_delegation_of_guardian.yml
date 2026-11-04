@@ -129,7 +129,8 @@ code: |
   signature_date
   store_variables_snapshot( persistent=True, data={ "zip": showifdef("users[0].address.zip"), "reached_interview_end": True, }, )
   colorado_delegation_of_guardian_preview_question
-  basic_questions_signature_flow
+  if has_notary:
+    basic_questions_signature_flow
   set_progress(100)
   colorado_delegation_of_guardian_download
 comment: Controls order and branching logic for questions specific to this form
