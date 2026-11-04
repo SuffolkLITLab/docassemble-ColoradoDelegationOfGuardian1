@@ -63,7 +63,7 @@ code: |
   AL_DEFAULT_STATE = "CO"
 ---
 code: |
-  github_repo_name = 'docassemble-ColoradoDelegationOfGuardian'
+  github_repo_name = 'docassemble-ColoradoDelegationOfGuardian1'
   github_user = 'SuffolkLITLab'
 ---
 template: interview_short_title
@@ -116,8 +116,8 @@ code: |
   nav.set_section("case_details")
   set_progress(30)
   user1_relationship
-  children[0].birthdate
   children.gather()
+  children[0].birthdate
   other_parties.gather()
   authorization_end_date
   notary_present_yes_no
@@ -185,8 +185,11 @@ question: |2
 fields:
   - State where notarization occurred: notarized_state
   - Day of notarization: notarized_day
+    datatype: integer
   - Month of notarization: notarized_month
+    datatype: integer
   - Year of notarization: notary_year
+    datatype: integer
   - Expiration of notarization: notarized_expiration
     datatype: date
 ---
