@@ -20,9 +20,9 @@ metadata:
 
     ### When you are finished
     - Sign the document.
-    - Give copies to the named person and keep one for your records.
+    - Give the signed, notarized original to the named Attorney in Fact and keep a copy for your records.
   when_you_are_finished: |
-    After filling out the form, make sure it is signed and notarized to make it official. Share copies with everyone involved, including the named Attorney in Fact.
+    After filling out the form, make sure it is signed and notarized to make it official. Give the signed, notarized original to the named Attorney in Fact and keep a copy for your records.
   efiling_enabled: False
   integrated_efiling: False
   integrated_email_filing: False
@@ -86,7 +86,7 @@ code: |
   al_next_steps_help_organization = ''
   al_next_steps_help_url = ''
   al_next_steps_generate_qr_code = False
-  al_next_steps_what_happens_next = 'After filling out the form, make sure it is signed and notarized to make it official. Share copies with everyone involved, including the named Attorney in Fact.'
+  al_next_steps_what_happens_next = 'After filling out the form, make sure it is signed and notarized to make it official. Give the signed, notarized original to the named Attorney in Fact and keep a copy for your records.'
   al_next_steps_what_can_decision_maker_do = "The named Attorney in Fact can make decisions about the daily care, education, and health of the child or person who can't take care of themselves. They can also allow medical treatments when needed."
   al_next_steps_what_happens_if_i_win = "If the delegation works, the person you named will be able to manage the responsibilities well. You can take back the power at any time if you think it's needed."
 ---
@@ -146,7 +146,7 @@ subquestion: |
 
   ### When you are finished
   - Sign the document in front of a notary public.
-  - Give copies to the named person and keep one for your records.
+  - Give the signed, notarized original to the named Attorney in Fact and keep a copy for your records.
 
   Use this form if you are a parent or guardian who needs to temporarily delegate your power. It is important to make sure that the person you are naming is trustworthy and can handle the responsibilities.
 ---
@@ -166,7 +166,7 @@ id: Authorization Details
 question: |2
   How long would you like this person to take care of the child?
 subquestion: |
-  When should this permission end? Enter a date up to 12 months after this form is filed.
+  When should this permission end? Enter a date up to 12 months after you sign this form.
 fields:
   - When would you like the permission to end?: authorization_end_date
     datatype: date
@@ -398,13 +398,12 @@ question: |
 subquestion: |
   ${ users.table }
 
-  ${ users.add_action() }
 ---
 table: users.table
 rows: users
 columns:
   - Name: |
-      row_item.name_full() if defined("row_item.name.first") else ""
+      row_item.name_full()
   - Signature: |
       row_item.signature if defined("row_item.signature") else ""
 edit:
@@ -418,15 +417,14 @@ question: |
 subquestion: |
   ${ children.table }
 
-  ${ children.add_action() }
 ---
 table: children.table
 rows: children
 columns:
   - Birthdate: |
-      row_item.birthdate if defined("row_item.birthdate") else ""
+      row_item.birthdate.format("MM/dd/yyyy")
   - Name: |
-      row_item.name_full() if defined("row_item.name.first") else ""
+      row_item.name_full()
 edit:
   - birthdate
   - name.first
@@ -439,13 +437,12 @@ question: |
 subquestion: |
   ${ other_parties.table }
 
-  ${ other_parties.add_action() }
 ---
 table: other_parties.table
 rows: other_parties
 columns:
   - Name: |
-      row_item.name_full() if defined("row_item.name.first") else ""
+      row_item.name_full()
 edit:
   - name.first
 confirm: True
@@ -457,7 +454,6 @@ question: |
 subquestion: |
   ${ notarized.table }
 
-  ${ notarized.add_action() }
 ---
 table: notarized.table
 rows: notarized
@@ -465,7 +461,7 @@ columns:
   - Address: |
       row_item.address.block() if defined("row_item.address.county") else ""
   - Name: |
-      row_item.name_full() if defined("row_item.name.first") else ""
+      row_item.name_full()
   - Signature: |
       row_item.signature if defined("row_item.signature") else ""
 edit:
