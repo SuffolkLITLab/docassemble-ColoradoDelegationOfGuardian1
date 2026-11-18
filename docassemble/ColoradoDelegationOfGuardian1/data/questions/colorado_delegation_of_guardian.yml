@@ -1,4 +1,11 @@
 ---
+translations:
+  - FamilySpanish08_es.xlsx
+---
+include:
+  - family_spanish_words.yml
+---
+---
 include:
   - docassemble.AssemblyLine:assembly_line.yml
   - docassemble.ALAnyState:any_state.yml
@@ -46,8 +53,7 @@ metadata:
   typical_role: "unknown"
   al_weaver_version: "2.4.0"
   generated_on: "2026-10-14"
-  languages:
-    - en
+  languages: [en, es]
   jurisdiction: "NAM-US-US+CO"
   review_date: 2026-10-14
   form_titles:
@@ -77,19 +83,11 @@ code: |
 id: alweaver assemblyline settings
 initial: True
 code: |
-  # These exact-name variables drive the reusable next-steps DOCX shell and
-  # are editable in Weaver's AssemblyLine settings panel.
+  # Next-steps prose is maintained directly in the bilingual DOCX template.
   al_next_steps_enabled = True
-  al_next_steps_intro_prompt = 'Delegate parental power effectively'
-  al_next_steps_title = 'Colorado Delegation of Guardian'
-  al_next_steps_document_title = 'Delegation'
-  al_next_steps_document_purpose = 'authority'
   al_next_steps_help_organization = ''
   al_next_steps_help_url = ''
   al_next_steps_generate_qr_code = False
-  al_next_steps_what_happens_next = 'After filling out the form, make sure it is signed and notarized to make it official. Give the signed, notarized original to the named Attorney in Fact and keep a copy for your records.'
-  al_next_steps_what_can_decision_maker_do = "The named Attorney in Fact can make decisions about the daily care, education, and health of the child or person who can't take care of themselves. They can also allow medical treatments when needed."
-  al_next_steps_what_happens_if_i_win = "If the delegation works, the person you named will be able to manage the responsibilities well. You can take back the power at any time if you think it's needed."
 ---
 objects:
   - children: ALPeopleList.using(ask_number=True,target_number=1)
@@ -158,8 +156,8 @@ fields:
   - What is your relationship to the child?: user1_relationship
     datatype: dropdown
     choices:
-      - Parent
-      - Guardian
+      - {label: "Parent", value: "Parent"}
+      - {label: "Guardian", value: "Guardian"}
   - "Date of parent or guardian signature": users1_signature_date
     datatype: date
 ---
@@ -406,10 +404,12 @@ columns:
   - Name: |
       row_item.name_full()
   - Signature: |
-      row_item.signature if defined("row_item.signature") else ""
+      row_item.signature if row_item.attribute_defined('signature') else ""
 edit:
   - name.first
 confirm: True
+edit header: |
+  ${ word("Actions") }
 ---
 id: edit children
 continue button field: children.revisit
@@ -430,6 +430,8 @@ edit:
   - birthdate
   - name.first
 confirm: True
+edit header: |
+  ${ word("Actions") }
 ---
 id: edit other parties
 continue button field: other_parties.revisit
@@ -447,6 +449,8 @@ columns:
 edit:
   - name.first
 confirm: True
+edit header: |
+  ${ word("Actions") }
 ---
 id: edit notarized
 continue button field: notarized.revisit
@@ -460,15 +464,17 @@ table: notarized.table
 rows: notarized
 columns:
   - Address: |
-      row_item.address.block() if defined("row_item.address.county") else ""
+      row_item.address.block() if row_item.address.attribute_defined('county') else ""
   - Name: |
       row_item.name_full()
   - Signature: |
-      row_item.signature if defined("row_item.signature") else ""
+      row_item.signature if row_item.attribute_defined('signature') else ""
 edit:
   - address.county
   - name.first
 confirm: True
+edit header: |
+  ${ word("Actions") }
 ---
 id: download colorado_delegation_of_guardian
 event: colorado_delegation_of_guardian_download
@@ -537,12 +543,12 @@ attachment:
   pdf template file: Colorado_Delegation_of_Guardian.pdf
   fields:
       - "users1_name_full": ${ users[0] }
-      - "children1_birthdate": ${ children[0].birthdate.format() }
+      - "children1_birthdate": ${ children[0].birthdate.format(language='en') }
       - "user1_relationship": ${ user1_relationship }
       - "children1_name": ${ children[0] }
       - "other_parties1_name": ${ other_parties[0] }
-      - "authorization_end_date": ${ authorization_end_date.format() }
-      - "users1_signature_date": ${ users1_signature_date.format() }
+      - "authorization_end_date": ${ authorization_end_date.format(language='en') }
+      - "users1_signature_date": ${ users1_signature_date.format(language='en') }
       - "users1_signature": ${ users[0].signature }
       - "users1_signature__1": ${ users[0].signature }
       - "notarized_county": ${ notarized[0].address.county }
@@ -550,7 +556,7 @@ attachment:
       - "notarized_day": ${ notarized_day }
       - "notarized_month": ${ notarized_month }
       - "notary_year": ${ notary_year }
-      - "notarized_expiration": ${ notarized_expiration.format() }
+      - "notarized_expiration": ${ notarized_expiration.format(language='en') }
       - "notarized_name": ${ notarized[0] }
       - "notarized_signature": ${ notarized[0].signature_if_final(i) }
 ---
@@ -566,3 +572,12 @@ attachment:
 #continue button field: continue
 ---
 
+
+---
+language: es
+sections:
+- people: Personas
+- case_details: Detalles del caso
+- about_you: Sobre usted
+- sign_and_submit: Firmar y presentar
+- review_colorado_delegation_of_guardian: Revise sus respuestas
